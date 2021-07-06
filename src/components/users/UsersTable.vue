@@ -28,20 +28,25 @@
           <td>
             {{ user.phone }}
           </td>
-          <td class="text-center">
+          <td>
             <button
-              class="
-                py-2
+              :class="[
+                `py-2
                 px-4
                 font-semibold
                 rounded-lg
                 shadow-md
                 text-white
-                bg-green-500
-                hover:bg-green-700
-              "
+                 ${
+                   checkIfAdded(user)
+                     ? 'bg-gray-500'
+                     : 'bg-green-500 hover:bg-green-700'
+                 }`,
+              ]"
+              @click="handleAdd(user)"
+              :disabled="checkIfAdded(user)"
             >
-              Add
+              {{ checkIfAdded(user) ? "Added" : "Add" }}
             </button>
           </td>
         </tr>
@@ -54,9 +59,12 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import { MODULE_NAME } from "@/store/modules/users";
-import { LIST } from "@/store/modules/users/state";
+import { LIST, SELECTED } from "@/store/modules/users/state";
+import { SELECTED_LENGTH } from "@/store/modules/users/getters";
+import { ADD_TO_SELECTED } from "@/store/modules/users/mutations";
 
-const { mapState } = createNamespacedHelpers(MODULE_NAME);
+const { mapState, mapMutations, mapGetters } =
+  createNamespacedHelpers(MODULE_NAME);
 
 export default {
   name: "UsersTable",
@@ -64,6 +72,20 @@ export default {
     ...mapState({
       users: LIST,
     }),
+    ...mapGetters({
+      length: SELECTED_LENGTH,
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      add: ADD_TO_SELECTED,
+    }),
+    checkIfAdded(user) {
+      return this.$store.state[MODULE_NAME][SELECTED].includes(user);
+    },
+    handleAdd(user) {
+      this.length < 5 ? this.add(user) : alert("No More :)");
+    },
   },
 };
 </script>

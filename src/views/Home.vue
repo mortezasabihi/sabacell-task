@@ -1,7 +1,18 @@
 <template>
   <div>
+    <!-- loading -->
     <div v-if="loading" class="text-4xl font-bold text-center">Loading ...</div>
-    <UsersTable v-else />
+    <!-- /loading -->
+
+    <div v-else>
+      <!-- selected -->
+      <UsersSelected />
+      <!-- /selected -->
+
+      <!-- list -->
+      <UsersTable />
+      <!-- /list -->
+    </div>
   </div>
 </template>
 
@@ -9,11 +20,13 @@
 import { MODULE_NAME } from "@/store/modules/users";
 import { LOADING } from "@/store/modules/users/state";
 import UsersTable from "@/components/users/UsersTable";
+import UsersSelected from "@/components/users/UsersSelected";
 
 export default {
   name: "Home",
   components: {
     UsersTable,
+    UsersSelected,
   },
   computed: {
     loading() {
