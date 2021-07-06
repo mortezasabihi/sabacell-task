@@ -5,7 +5,7 @@
     <!-- /name -->
 
     <!-- phone -->
-    <div>{{ user.phone }}</div>
+    <h6>{{ user.phone }}</h6>
     <!-- /phone -->
 
     <!-- delete btn -->
